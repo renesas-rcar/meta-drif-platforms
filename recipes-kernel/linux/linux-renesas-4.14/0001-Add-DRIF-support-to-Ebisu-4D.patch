@@ -1,0 +1,249 @@
+From 064b5900bb91a731f3edfd091bd5e595ff3b5de0 Mon Sep 17 00:00:00 2001
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Date: Wed, 16 Sep 2020 18:07:34 +0100
+Subject: [PATCH] Add DRIF support to Ebisu-4D
+
+It is possible to add SDR support to Ebisu-4D by means of
+Maxim's J5 board (and some HW modifications).
+
+This patch adds two new device trees, r8a77990-ebisu-4d-drif01.dts
+to add DRIF0 and DRIF1 support to a modified Ebisu-4D, and
+r8a77990-ebisu-4d-drif23.dts to similarly add DRIF2 and DRIF3
+support to Ebisu-4D.
+
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+---
+ .../dts/renesas/r8a77990-ebisu-4d-drif01.dts  | 113 ++++++++++++++++++
+ .../dts/renesas/r8a77990-ebisu-4d-drif23.dts  | 100 ++++++++++++++++
+ 2 files changed, 213 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a77990-ebisu-4d-drif01.dts
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a77990-ebisu-4d-drif23.dts
+
+diff --git a/arch/arm64/boot/dts/renesas/r8a77990-ebisu-4d-drif01.dts b/arch/arm64/boot/dts/renesas/r8a77990-ebisu-4d-drif01.dts
+new file mode 100644
+index 000000000000..8656bbc1cab1
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a77990-ebisu-4d-drif01.dts
+@@ -0,0 +1,113 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Device Tree Source for the Ebisu-4D board
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a77990-ebisu-4d.dts"
++
++/ {
++	maxim_xtal: maximextal {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <36864000>;
++	};
++};
++
++&drif00 {
++	pinctrl-0 = <&drif0_pins>;
++	pinctrl-names = "default";
++	renesas,primary-bond;
++	status = "okay";
++	port {
++		drif0_ep: endpoint {
++			sync-active = <1>;
++			remote-endpoint = <&max2175_0_ep>;
++		};
++	};
++};
++
++&drif01 {
++	status = "okay";
++};
++
++&drif10 {
++	pinctrl-0 = <&drif1_pins>;
++	pinctrl-names = "default";
++	status = "okay";
++	renesas,primary-bond;
++	port {
++		drif1_ep: endpoint {
++			sync-active = <1>;
++			remote-endpoint = <&max2175_1_ep>;
++		};
++	};
++};
++
++&drif11 {
++	status = "okay";
++};
++
++&i2c3 {
++	clock-frequency = <100000>;
++
++	max2175_0: tuner@60 {
++		compatible = "maxim,max2175";
++		reg = <0x60>;
++		clocks = <&maxim_xtal>;
++		clock-names = "xtal";
++		maxim,refout-load = <10>;
++
++		port {
++			max2175_0_ep: endpoint {
++				remote-endpoint = <&drif0_ep>;
++			};
++		};
++	};
++
++	max2175_1: tuner@61 {
++		compatible = "maxim,max2175";
++		reg = <0x61>;
++		clocks = <&maxim_xtal>;
++		clock-names = "xtal";
++
++		port {
++			max2175_1_ep: endpoint {
++				remote-endpoint = <&drif1_ep>;
++			};
++		};
++	};
++};
++
++&pfc {
++	drif0_pins: drif0 {
++		groups = "drif0_ctrl_b", "drif0_data0_b", "drif0_data1_b";
++		function = "drif0";
++	};
++
++	drif1_pins: drif1 {
++		groups = "drif1_ctrl", "drif1_data0", "drif1_data1";
++		function = "drif1";
++	};
++};
++
++&du {
++	status = "disabled";
++};
++
++&sdhi0 {
++	status = "disabled";
++};
++
++&sdhi1 {
++	status = "disabled";
++};
++
++&rcar_sound {
++	status = "disabled";
++};
++
++&vccq_sdhi1 {
++	status = "disabled";
++};
+diff --git a/arch/arm64/boot/dts/renesas/r8a77990-ebisu-4d-drif23.dts b/arch/arm64/boot/dts/renesas/r8a77990-ebisu-4d-drif23.dts
+new file mode 100644
+index 000000000000..fa5bef94238b
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a77990-ebisu-4d-drif23.dts
+@@ -0,0 +1,100 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Device Tree Source for the Ebisu-4D board
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a77990-ebisu-4d.dts"
++
++/ {
++	maxim_xtal: maximextal {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <36864000>;
++	};
++};
++
++&drif20 {
++	pinctrl-0 = <&drif2_pins>;
++	pinctrl-names = "default";
++	renesas,primary-bond;
++	status = "okay";
++	port {
++		drif2_ep: endpoint {
++			sync-active = <1>;
++			remote-endpoint = <&max2175_0_ep>;
++		};
++	};
++};
++
++&drif21 {
++	status = "okay";
++};
++
++&drif30 {
++	pinctrl-0 = <&drif3_pins>;
++	pinctrl-names = "default";
++	status = "okay";
++	renesas,primary-bond;
++	port {
++		drif3_ep: endpoint {
++			sync-active = <1>;
++			remote-endpoint = <&max2175_1_ep>;
++		};
++	};
++};
++
++&drif31 {
++	status = "okay";
++};
++
++&du {
++	status = "disabled";
++};
++
++&i2c3 {
++	clock-frequency = <100000>;
++
++	max2175_0: tuner@60 {
++		compatible = "maxim,max2175";
++		reg = <0x60>;
++		clocks = <&maxim_xtal>;
++		clock-names = "xtal";
++		maxim,refout-load = <10>;
++
++		port {
++			max2175_0_ep: endpoint {
++				remote-endpoint = <&drif2_ep>;
++			};
++		};
++	};
++	max2175_1: tuner@61 {
++		compatible = "maxim,max2175";
++		reg = <0x61>;
++		clocks = <&maxim_xtal>;
++		clock-names = "xtal";
++
++		port {
++			max2175_1_ep: endpoint {
++				remote-endpoint = <&drif3_ep>;
++			};
++		};
++	};
++};
++
++&pfc {
++	drif2_pins: drif2 {
++		groups = "drif2_ctrl_b", "drif2_data0_b", "drif2_data1_b";
++		function = "drif2";
++	};
++
++	drif3_pins: drif3 {
++		groups = "drif3_ctrl_b", "drif3_data0_b", "drif3_data1_b";
++		function = "drif3";
++	};
++};
++
++&pwm3 {
++	status = "disabled";
++};
+-- 
+2.25.1
+
