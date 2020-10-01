@@ -2,7 +2,8 @@
 
 This meta-layer adds DRIF support for the following platforms to the Yocto
 BSP v3.21.0 release:
-* **Ebisu-4D** board.
+* Ebisu-4D
+* M3-N Salvator-XS
 
 Please refer to Section [Hardware Requirements](#hardware-requirements) for
 specific information on the hardware.
@@ -13,14 +14,14 @@ meta-layer depends on.
 
 ## Hardware Requirements
 
-### Ebisu-4D
+### E3 Ebisu-4D
 
-The Ebisu-4D platform supported by this meta-layer requires HW modifications,
+The E3 Ebisu-4D platform supported by this meta-layer requires HW modifications,
 and it also requires a Maxim J5 expansion board connected to **CN27 EXIO\_B**
 for the DRIF interfaces to be functional.
 
 The Maxim J5 expansion board comes with two tuners, and the R-Car E3 SoC (the
-SoC powering Ebisu-4D) comes with 4 DRIF interfaces, this means that only
+SoC powering E3 Ebisu-4D) comes with 4 DRIF interfaces, this means that only
 two DRIF interfaces can be used at the same time.
 
 This meta-layer provides a list of hardware modifications that can be applied
@@ -30,6 +31,48 @@ to two different Ebisu-4D board in order to get:
 
 The document with the list of hardware modifications can be found under:
 [E3\_DRIF\_Hardware\_Modifications.pptx](docs/E3\_DRIF\_Hardware\_Modifications.pptx).
+
+### M3-N Salvator-XS
+
+The M3-N Salvator-XS platform supported by this meta-layer requires HW
+modifications, and it also requires a Maxim J5 expansion board connected to
+**CN27 EXIO\_B** for the DRIF interfaces to be functional.
+
+The Maxim J5 expansion board comes with two tuners, and the R-Car M3-N SoC (the
+SoC powering M3-N Salvator-X) comes with 4 DRIF interfaces, this means that
+only two DRIF interfaces can be used at the same time.
+
+The BSP from this meta-layer adds support for four DRIF oriented device trees:
+* renesas/r8a77965-salvator-xs-drif01.dts
+* renesas/r8a77965-salvator-xs-drif23.dts
+* renesas/r8a77965-salvator-x-drif01.dts
+* renesas/r8a77965-salvator-x-drif23.dts
+
+*renesas/r8a77965-salvator-xs-drif01.dts* adds DRIF0 and DRIF1 support to
+M3-N Salvator-XS + Maxim J5 expansion board.
+M3-N Salvator-XS needs to be modified to allow for the relevant wires to reach
+the relevant interfaces.
+
+In a similar fashion, *renesas/r8a77965-salvator-xs-drif23.dts* adds DRIF2 and
+DRIF3 support to M3-N Salvator-XS + Maxim J5 expansion board.
+The modifications for M3-N Salvator-XS required to support DRIF2 and DRIF3 are
+very similar to the ones required to add DRIF0 and DRIF1 support, as DRIF3 is
+pin-to-pin compatible with DRIF1, and DRIF2 is *almost* pin-to-pin compatible
+with DRIF0, the only difference is that DRIF2 data lines are crossed w.r.t. the
+data lines of DRIF0.
+
+*renesas/r8a77965-salvator-x-drif01.dts*, similarly to
+*renesas/r8a77965-salvator-xs-drif01.dts*, adds DRIF0 and DRIF1 support to
+M3-N Salvator-X.
+
+*renesas/r8a77965-salvator-x-drif23.dts*, similarly to
+*renesas/r8a77965-salvator-xs-drif23.dts*, adds DRIF2 and DRIF3 support to
+M3-N Salvator-X.
+
+The document with the list of hardware modifications necessary for
+renesas/r8a77965-salvator-xs-drif01.dts and
+renesas/r8a77965-salvator-x-drif01.dts to work can be found here:
+[Salvator-XS\_DRIF\_Hardware\_Modifications.pptx](docs/Salvator-XS\_DRIF\_Hardware\_Modifications.pptx).
 
 ## Dependencies
 

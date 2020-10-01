@@ -1,0 +1,322 @@
+From d44e2e8255f0e750dc4e05bdb97087326585652c Mon Sep 17 00:00:00 2001
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Date: Thu, 1 Oct 2020 23:12:44 +0100
+Subject: [PATCH 1/2] Add DRIF support to M3-N Salvator-X[S]
+
+It is possible to add SDR support to M3-N Salvator-X and M3-N
+Salvator-XS boards by means of Maxim's J5 board (and some HW
+modifications).
+
+This patch adds four new device trees:
+* r8a77965-salvator-xs-drif01.dts, to add DRIF0 and DRIF1 support
+  to a modified M3-N Salvator-XS board with a Maxim J5 add-on
+  board plugged in connector EXIO_B CN27
+* r8a77965-salvator-xs-drif23.dts, to similarly add DRIF2 and DRIF3
+  support to a modified M3-N Salvator-XS board with a Maxim J5
+  add-on board plugged in connector EXIO_B CN27
+* r8a77965-salvator-x-drif01.dts, same as
+  r8a77965-salvator-xs-drif01.dts, only for M3-N Salvator-X board
+* r8a77965-salvator-x-drif23.dts, same as
+  r8a77965-salvator-xs-drif23.dts, only for M3-N Salvator-X board
+
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+---
+ .../renesas/r8a77965-salvator-x-drif01.dts    |  11 ++
+ .../renesas/r8a77965-salvator-x-drif23.dts    |  11 ++
+ .../renesas/r8a77965-salvator-xs-drif01.dts   |  11 ++
+ .../renesas/r8a77965-salvator-xs-drif23.dts   |  11 ++
+ .../boot/dts/renesas/salvator-drif01.dtsi     | 101 ++++++++++++++++++
+ .../boot/dts/renesas/salvator-drif23.dtsi     | 101 ++++++++++++++++++
+ 6 files changed, 246 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a77965-salvator-x-drif01.dts
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a77965-salvator-x-drif23.dts
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a77965-salvator-xs-drif01.dts
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a77965-salvator-xs-drif23.dts
+ create mode 100644 arch/arm64/boot/dts/renesas/salvator-drif01.dtsi
+ create mode 100644 arch/arm64/boot/dts/renesas/salvator-drif23.dtsi
+
+diff --git a/arch/arm64/boot/dts/renesas/r8a77965-salvator-x-drif01.dts b/arch/arm64/boot/dts/renesas/r8a77965-salvator-x-drif01.dts
+new file mode 100644
+index 000000000000..3440d571e659
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a77965-salvator-x-drif01.dts
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Source for the Salvator-X board with R-Car M3-N and
++ * Maxim J5 add-on board. DRIF0 and DRIF1 connected to the Maxim J5 add-on
++ * board.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a77965-salvator-x.dts"
++#include "salvator-drif01.dtsi"
+diff --git a/arch/arm64/boot/dts/renesas/r8a77965-salvator-x-drif23.dts b/arch/arm64/boot/dts/renesas/r8a77965-salvator-x-drif23.dts
+new file mode 100644
+index 000000000000..fbda2037c8b9
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a77965-salvator-x-drif23.dts
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Source for the Salvator-X board with R-Car M3-N and
++ * Maxim J5 add-on board. DRIF2 and DRIF3 connected to the Maxim J5 add-on
++ * board.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a77965-salvator-x.dts"
++#include "salvator-drif23.dtsi"
+diff --git a/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs-drif01.dts b/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs-drif01.dts
+new file mode 100644
+index 000000000000..93d4c2e5877f
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs-drif01.dts
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Source for the Salvator-X 2nd version board with R-Car M3-N and
++ * Maxim J5 add-on board. DRIF0 and DRIF1 connected to the Maxim J5 add-on
++ * board.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a77965-salvator-xs.dts"
++#include "salvator-drif01.dtsi"
+diff --git a/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs-drif23.dts b/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs-drif23.dts
+new file mode 100644
+index 000000000000..66808102b398
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs-drif23.dts
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Source for the Salvator-X 2nd version board with R-Car M3-N and
++ * Maxim J5 add-on board. DRIF2 and DRIF3 connected to the Maxim J5 add-on
++ * board.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a77965-salvator-xs.dts"
++#include "salvator-drif23.dtsi"
+diff --git a/arch/arm64/boot/dts/renesas/salvator-drif01.dtsi b/arch/arm64/boot/dts/renesas/salvator-drif01.dtsi
+new file mode 100644
+index 000000000000..68cac004c79e
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/salvator-drif01.dtsi
+@@ -0,0 +1,101 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Include for Salvator-X and Salvator-XS with DRIF0 and DRIF1
++ * support.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++/ {
++	maxim_xtal: maximextal {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <36864000>;
++	};
++
++	lvds {
++		status = "disabled";
++	};
++};
++
++&pfc {
++	drif0_pins: drif0 {
++		groups = "drif0_ctrl_a", "drif0_data0_a", "drif0_data1_a";
++		function = "drif0";
++	};
++
++	drif1_pins: drif1 {
++		groups = "drif1_ctrl_a", "drif1_data0_a", "drif1_data1_a";
++		function = "drif1";
++	};
++};
++
++&i2c2 {
++	max2175_0: tuner@60 {
++		compatible = "maxim,max2175";
++		reg = <0x60>;
++		clocks = <&maxim_xtal>;
++		clock-names = "xtal";
++		maxim,refout-load = <10>;
++
++		port {
++			max2175_0_ep: endpoint {
++				remote-endpoint = <&drif0_ep>;
++			};
++		};
++
++	};
++
++	max2175_1: tuner@61 {
++		compatible = "maxim,max2175";
++		reg = <0x61>;
++		clocks = <&maxim_xtal>;
++		clock-names = "xtal";
++
++		port {
++			max2175_1_ep: endpoint {
++				remote-endpoint = <&drif1_ep>;
++			};
++		};
++	};
++};
++
++&drif00 {
++	pinctrl-0 = <&drif0_pins>;
++	pinctrl-names = "default";
++	renesas,primary-bond;
++	status = "okay";
++
++	port {
++		drif0_ep: endpoint {
++			renesas,syncac-active = <1>;
++			remote-endpoint = <&max2175_0_ep>;
++		};
++	};
++};
++
++&drif01 {
++	status = "okay";
++};
++
++&drif10 {
++	pinctrl-0 = <&drif1_pins>;
++	pinctrl-names = "default";
++	status = "okay";
++	renesas,primary-bond;
++
++	port {
++		drif1_ep: endpoint {
++			renesas,syncac-active = <1>;
++			remote-endpoint = <&max2175_1_ep>;
++		};
++	};
++};
++
++&drif11 {
++	status = "okay";
++};
++
++&backlight {
++	status = "disabled";
++};
+diff --git a/arch/arm64/boot/dts/renesas/salvator-drif23.dtsi b/arch/arm64/boot/dts/renesas/salvator-drif23.dtsi
+new file mode 100644
+index 000000000000..41e125c800e4
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/salvator-drif23.dtsi
+@@ -0,0 +1,101 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Include for Salvator-X and Salvator-XS with DRIF2 and DRIF3
++ * support.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++/ {
++	maxim_xtal: maximextal {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <36864000>;
++	};
++
++	lvds {
++		status = "disabled";
++	};
++};
++
++&pfc {
++	drif2_pins: drif2 {
++		groups = "drif2_ctrl_a", "drif2_data0_a", "drif2_data1_a";
++		function = "drif2";
++	};
++
++	drif3_pins: drif3 {
++		groups = "drif3_ctrl_a", "drif3_data0_a", "drif3_data1_a";
++		function = "drif3";
++	};
++};
++
++&i2c2 {
++	max2175_0: tuner@60 {
++		compatible = "maxim,max2175";
++		reg = <0x60>;
++		clocks = <&maxim_xtal>;
++		clock-names = "xtal";
++		maxim,refout-load = <10>;
++
++		port {
++			max2175_0_ep: endpoint {
++				remote-endpoint = <&drif2_ep>;
++			};
++		};
++
++	};
++
++	max2175_1: tuner@61 {
++		compatible = "maxim,max2175";
++		reg = <0x61>;
++		clocks = <&maxim_xtal>;
++		clock-names = "xtal";
++
++		port {
++			max2175_1_ep: endpoint {
++				remote-endpoint = <&drif3_ep>;
++			};
++		};
++	};
++};
++
++&drif20 {
++	pinctrl-0 = <&drif2_pins>;
++	pinctrl-names = "default";
++	renesas,primary-bond;
++	status = "okay";
++
++	port {
++		drif2_ep: endpoint {
++			renesas,syncac-active = <1>;
++			remote-endpoint = <&max2175_0_ep>;
++		};
++	};
++};
++
++&drif21 {
++	status = "okay";
++};
++
++&drif30 {
++	pinctrl-0 = <&drif3_pins>;
++	pinctrl-names = "default";
++	status = "okay";
++	renesas,primary-bond;
++
++	port {
++		drif3_ep: endpoint {
++			renesas,syncac-active = <1>;
++			remote-endpoint = <&max2175_1_ep>;
++		};
++	};
++};
++
++&drif31 {
++	status = "okay";
++};
++
++&backlight {
++	status = "disabled";
++};
+-- 
+2.25.1
+
