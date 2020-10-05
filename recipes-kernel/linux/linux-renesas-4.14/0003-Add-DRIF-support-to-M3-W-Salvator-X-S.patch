@@ -1,0 +1,100 @@
+From c30c4956b0573b4655469cdb096b6e860c7a6808 Mon Sep 17 00:00:00 2001
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Date: Mon, 5 Oct 2020 15:27:04 +0100
+Subject: [PATCH 2/2] Add DRIF support to M3-W Salvator-X[S]
+
+It is possible to add SDR support to M3-W Salvator-X and M3-W
+Salvator-XS boards by means of Maxim's J5 board (and some HW
+modifications).
+
+This patch adds four new device trees:
+* r8a7796-salvator-xs-drif01.dts, to add DRIF0 and DRIF1 support
+  to a modified M3-W Salvator-XS board with a Maxim J5 add-on
+  board plugged in connector EXIO_B CN27
+* r8a7796-salvator-xs-drif23.dts, to similarly add DRIF2 and DRIF3
+  support to a modified M3-W Salvator-XS board with a Maxim J5
+  add-on board plugged in connector EXIO_B CN27
+* r8a7796-salvator-x-drif01.dts, same as
+  r8a7796-salvator-xs-drif01.dts, only for M3-W Salvator-X board
+* r8a7796-salvator-x-drif23.dts, same as
+  r8a7796-salvator-xs-drif23.dts, only for M3-W Salvator-X board
+
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+---
+ .../boot/dts/renesas/r8a7796-salvator-x-drif01.dts     | 10 ++++++++++
+ .../boot/dts/renesas/r8a7796-salvator-x-drif23.dts     | 10 ++++++++++
+ .../boot/dts/renesas/r8a7796-salvator-xs-drif01.dts    | 10 ++++++++++
+ .../boot/dts/renesas/r8a7796-salvator-xs-drif23.dts    | 10 ++++++++++
+ 4 files changed, 40 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a7796-salvator-x-drif01.dts
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a7796-salvator-x-drif23.dts
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a7796-salvator-xs-drif01.dts
+ create mode 100644 arch/arm64/boot/dts/renesas/r8a7796-salvator-xs-drif23.dts
+
+diff --git a/arch/arm64/boot/dts/renesas/r8a7796-salvator-x-drif01.dts b/arch/arm64/boot/dts/renesas/r8a7796-salvator-x-drif01.dts
+new file mode 100644
+index 000000000000..5cb11a379093
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a7796-salvator-x-drif01.dts
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Source for the Salvator-X board with R-Car M3-W ES1.x and Maxim
++ * J5 add-on board. DRIF0 and DRIF1 connected to the Maxim J5 add-on board.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a7796-salvator-x.dts"
++#include "salvator-drif01.dtsi"
+diff --git a/arch/arm64/boot/dts/renesas/r8a7796-salvator-x-drif23.dts b/arch/arm64/boot/dts/renesas/r8a7796-salvator-x-drif23.dts
+new file mode 100644
+index 000000000000..282d82f6220e
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a7796-salvator-x-drif23.dts
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Source for the Salvator-X board with R-Car M3-W ES1.x and Maxim
++ * J5 add-on board. DRIF2 and DRIF3 connected to the Maxim J5 add-on board.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a7796-salvator-x.dts"
++#include "salvator-drif23.dtsi"
+diff --git a/arch/arm64/boot/dts/renesas/r8a7796-salvator-xs-drif01.dts b/arch/arm64/boot/dts/renesas/r8a7796-salvator-xs-drif01.dts
+new file mode 100644
+index 000000000000..5850aa916499
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a7796-salvator-xs-drif01.dts
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Source for the Salvator-XS board with R-Car M3-W ES1.x and Maxim
++ * J5 add-on board. DRIF0 and DRIF1 connected to the Maxim J5 add-on board.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a7796-salvator-xs.dts"
++#include "salvator-drif01.dtsi"
+diff --git a/arch/arm64/boot/dts/renesas/r8a7796-salvator-xs-drif23.dts b/arch/arm64/boot/dts/renesas/r8a7796-salvator-xs-drif23.dts
+new file mode 100644
+index 000000000000..aabb33fb2678
+--- /dev/null
++++ b/arch/arm64/boot/dts/renesas/r8a7796-salvator-xs-drif23.dts
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Source for the Salvator-XS board with R-Car M3-W ES1.x and Maxim
++ * J5 add-on board. DRIF2 and DRIF3 connected to the Maxim J5 add-on board.
++ *
++ * Copyright (C) 2020 Renesas Electronics Corp.
++ */
++
++#include "r8a7796-salvator-xs.dts"
++#include "salvator-drif23.dtsi"
+-- 
+2.25.1
+
