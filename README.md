@@ -4,6 +4,7 @@ This meta-layer adds DRIF support for the following platforms to the Yocto
 BSP v3.21.0 release:
 * Ebisu-4D
 * M3-N Salvator-XS
+* M3-W Salvator-XS
 
 Please refer to Section [Hardware Requirements](#hardware-requirements) for
 specific information on the hardware.
@@ -73,6 +74,25 @@ The document with the list of hardware modifications necessary for
 renesas/r8a77965-salvator-xs-drif01.dts and
 renesas/r8a77965-salvator-x-drif01.dts to work can be found here:
 [Salvator-XS\_DRIF\_Hardware\_Modifications.pptx](docs/Salvator-XS\_DRIF\_Hardware\_Modifications.pptx).
+
+### M3-W Salvator-XS
+
+In order to get M3-W Salvator-XS to showcase DRIF support, the platform needs
+some hardware modifications and it needs to be connected to Maxim J5 expansion
+board via connector **CN27 EXIO\_B**,
+like for the M3-N Salvator-X[S] case. More specifically, the hardware
+modifications required by M3-W Salvator-XS are the same as the ones required by
+M3-N Salvator-X[S], and the details can be found here:
+[Salvator-XS\_DRIF\_Hardware\_Modifications.pptx](docs/Salvator-XS\_DRIF\_Hardware\_Modifications.pptx).
+
+This meta-layer adds four new device trees:
+* renesas/r8a7796-salvator-xs-drif01.dts
+* renesas/r8a7796-salvator-xs-drif23.dts
+* renesas/r8a7796-salvator-x-drif01.dts
+* renesas/r8a7796-salvator-x-drif23.dts
+
+The four new device trees cover the same range of possibilities as the device
+trees for M3-N Salvator-X[S], only this time it's for M3-W Salvator-X[S].
 
 ## Dependencies
 
