@@ -5,6 +5,7 @@ BSP v3.21.0 release:
 * Ebisu-4D
 * M3-N Salvator-XS
 * M3-W Salvator-XS
+* H3 Salvator-XS
 
 Please refer to Section [Hardware Requirements](#hardware-requirements) for
 specific information on the hardware.
@@ -93,6 +94,25 @@ This meta-layer adds four new device trees:
 
 The four new device trees cover the same range of possibilities as the device
 trees for M3-N Salvator-X[S], only this time it's for M3-W Salvator-X[S].
+
+### H3 Salvator-XS
+
+Very similarly to the other Salvator-XS cases, the H3 Salvator-XS board needs
+some hardware modifications and a Maxim J5 expansion board plugged onto
+connector **CN27 EXIO\_B** to have DRIF support.
+Similarly to the other Salvator-X[S] boards, the details of the HW modifications
+required can be found here:
+[Salvator-XS\_DRIF\_Hardware\_Modifications.pptx](docs/Salvator-XS\_DRIF\_Hardware\_Modifications.pptx).
+
+From a software perspective, things are very similar to the other Salvator-XS
+boards, as this meta-layer adds four new device trees:
+* renesas/r8a7795-salvator-xs-drif01.dts
+* renesas/r8a7795-salvator-xs-drif23.dts
+* renesas/r8a7795-salvator-x-drif01.dts
+* renesas/r8a7795-salvator-x-drif23.dts
+
+The meaning of these new device trees is very similar to the other Salvator-XS
+platforms.
 
 ## Dependencies
 
